@@ -9,6 +9,7 @@ import Cursor from './components/Cursor.jsx'
 import Experience from './components/Experience.jsx'
 import Hero from './components/Hero.jsx'
 import Metrics from './components/Metrics.jsx'
+import Media from './components/Media.jsx'
 import Nav from './components/Nav.jsx'
 import Preloader from './components/Preloader.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
@@ -53,6 +54,7 @@ export default function App() {
         <Skills />
         <Experience />
         <Awards />
+        <Media />
         <Contact lenis={lenis} />
       </main>
     </>
