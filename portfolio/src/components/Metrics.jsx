@@ -6,11 +6,12 @@ import Reveal from './Reveal.jsx'
 /* Counts up the numeric part of a label like "2,500+" or "30%". */
 function CountUp({ value, play }) {
   const match = value.match(/[\d,.]+/)
+  const matchText = match?.[0]
   const target = match ? Number(match[0].replace(/,/g, '')) : 0
   const [n, setN] = useState(0)
 
   useEffect(() => {
-    if (!play || !match) return
+    if (!play || !matchText) return
     let raf
     const start = performance.now()
     const DURATION = 1600
@@ -26,10 +27,10 @@ function CountUp({ value, play }) {
       cancelAnimationFrame(raf)
       clearTimeout(settle)
     }
-  }, [play, target, match])
+  }, [play, target, matchText])
 
-  if (!match) return <>{value}</>
-  return <>{value.replace(match[0], n.toLocaleString('en-IN'))}</>
+  if (!matchText) return <>{value}</>
+  return <>{value.replace(matchText, n.toLocaleString('en-IN'))}</>
 }
 
 export default function Metrics() {

@@ -47,7 +47,7 @@ export default function PortraitCard({ className = '' }) {
             original beige background fight the dark page. */}
         <div
           className="absolute inset-0 mix-blend-color"
-          style={{ background: 'linear-gradient(150deg, #7621b0 0%, #b600a8 55%, #ff6b2c 100%)', opacity: 0.34 }}
+          style={{ background: 'linear-gradient(150deg, #123c63 0%, #0f7890 55%, #ff8a3d 100%)', opacity: 0.34 }}
         />
         <div
           className="absolute inset-0"
