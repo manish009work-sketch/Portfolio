@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+:root {
+  --mist: #d7e2ea;
+  --coal: #0c0c0c;
+  --ink: #08080a;
+  --accent-a: #b600a8;
+  --accent-b: #7621b0;
+  --accent-c: #ff6b2c;
+  --nav-h: 76px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  /* `clip`, not `hidden`: hidden makes these elements scroll containers, which
+     silently breaks `position: sticky` for everything inside them. `clip` walls
+     off horizontal overflow without creating a scrollport. */
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  background: var(--ink);
+  color: var(--mist);
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root { overflow-x: clip; width: 100%; }
+
+/* Very old browsers without `overflow: clip` still get protected. */
+@supports not (overflow-x: clip) {
+  html { overflow-x: hidden; }
+}
+
+img, svg, video, canvas { max-width: 100%; display: block; }
+
+::selection { background: var(--accent-a); color: #fff; }
+
+::-webkit-scrollbar { width: 9px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent-a), var(--accent-b));
+  border-radius: 99px;
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ------------------------------------------------------------------ *
+ * Type
+ * ------------------------------------------------------------------ */
+.font-display { font-family: 'Kanit', Impact, sans-serif; }
+
+/* Gradient display text — the signature look from the original site. */
+.text-chrome {
+  background: linear-gradient(175deg, #ffffff 0%, #c3d2dd 34%, #646973 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.text-accent-grad {
+  background: linear-gradient(100deg, var(--accent-a) 0%, var(--accent-b) 48%, var(--accent-c) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: clamp(0.6rem, 1.1vw, 0.72rem);
+  font-weight: 500;
+}
+
+/* Any user-supplied string (emails, URLs) must never push the layout wide. */
+.break-anywhere { overflow-wrap: anywhere; word-break: break-word; }
+
+/* ------------------------------------------------------------------ *
+ * Buttons
+ * ------------------------------------------------------------------ */
+.btn-accent {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(123deg, #18011f 0%, var(--accent-a) 38%, var(--accent-b) 72%, var(--accent-c) 100%);
+  background-size: 200% 200%;
+  box-shadow: 0 10px 40px -12px rgba(182, 0, 168, 0.75), inset 4px 4px 14px rgba(118, 33, 176, 0.6);
+  outline: 1.5px solid rgba(255, 255, 255, 0.85);
+  outline-offset: -3px;
+  color: #fff;
+  transition: background-position 0.6s ease, box-shadow 0.4s ease;
+}
+.btn-accent:hover { background-position: 100% 50%; box-shadow: 0 14px 50px -10px rgba(182, 0, 168, 0.95); }
+
+.btn-ghost {
+  border: 1.5px solid rgba(215, 226, 234, 0.35);
+  color: var(--mist);
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+.btn-ghost:hover { background: var(--mist); border-color: var(--mist); color: var(--coal); }
+
+/* ------------------------------------------------------------------ *
+ * Surfaces
+ * ------------------------------------------------------------------ */
+.glass {
+  background: rgba(215, 226, 234, 0.045);
+  border: 1px solid rgba(215, 226, 234, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ *
+ * Marquee — pure CSS, so it can't be knocked out of place by scroll math
+ * ------------------------------------------------------------------ */
+.marquee { display: flex; width: max-content; will-change: transform; }
+.marquee-track { display: flex; flex-shrink: 0; gap: 0.75rem; padding-right: 0.75rem; }
+@keyframes marquee-l { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+@keyframes marquee-r { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+.marquee-l { animation: marquee-l var(--dur, 44s) linear infinite; }
+.marquee-r { animation: marquee-r var(--dur, 44s) linear infinite; }
+.marquee-pause:hover .marquee { animation-play-state: paused; }
+
+.pill {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0.9rem 1.75rem;
+  border: 1px solid rgba(215, 226, 234, 0.22);
+  border-radius: 999px;
+  color: var(--mist);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: clamp(0.72rem, 1.35vw, 0.98rem);
+  transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+}
+.pill:hover { border-color: rgba(215, 226, 234, 0.6); background: rgba(215, 226, 234, 0.06); }
+.pill-dark { border-color: rgba(12, 12, 12, 0.2); color: var(--coal); }
+.pill-dark:hover { border-color: rgba(12, 12, 12, 0.55); background: rgba(12, 12, 12, 0.05); }
+
+/* Fade the marquee edges instead of hard-cutting them */
+.edge-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+/* ------------------------------------------------------------------ *
+ * Cursor
+ * ------------------------------------------------------------------ */
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 90;
+  mix-blend-mode: difference;
+}
+.cursor-dot { width: 7px; height: 7px; background: #fff; }
+.cursor-ring { width: 42px; height: 42px; border: 1px solid rgba(255, 255, 255, 0.6); }
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* ------------------------------------------------------------------ *
+ * Misc
+ * ------------------------------------------------------------------ */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover { background-size: 100% 1px; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-l, .marquee-r { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Experience stack
+ * Cards only stick (and only shrink) where there's room for it. Below
+ * lg they fall back to a plain vertical stack with auto height, which
+ * is what stops long bullet lists getting clipped on phones.
+ * ------------------------------------------------------------------ */
+.stack-item { position: relative; }
+
+@media (min-width: 1024px) {
+  .stack-item {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* The last card has nothing scrolling over it, so a full viewport of
+     travel just leaves a hole before the next section. */
+  .stack-item:last-child {
+    height: auto;
+    min-height: 68svh;
+    padding-block: 4vh;
+  }
+}
